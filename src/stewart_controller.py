@@ -51,6 +51,7 @@ class Stewart_Platform(object):
             alpha_P,
             alpha_P, 
             pi/3 + alpha_P] )
+            
 
         # Coordinate of the points where servo arms 
         # are attached to the corresponding servo axis.
@@ -105,10 +106,13 @@ class Stewart_Platform(object):
         orient = np.transpose(orient)
 
         # Get rotation matrix of platform. RotZ* RotY * RotX -> matmul
-        R = np.matmul( np.matmul(s.rotZ(orient[2]), s.rotY(orient[1])), s.rotX(orient[0]) )
+        R = np.matmul( np.matmul(s.rotX(orient[0]), s.rotY(orient[1])), s.rotZ(orient[2]) )
+        # R = np.matmul(s.rotZ(-np.pi/6), R)
         
         # Get leg length for each leg
-        s.leg = np.repeat(trans[:, np.newaxis], 6, axis=1) + np.repeat(s.home_pos[:, np.newaxis], 6, axis=1) + np.matmul(np.transpose(R), s.P) - s.B 
+        # s.leg = np.repeat(trans[:, np.newaxis], 6, axis=1) + np.repeat(s.home_pos[:, np.newaxis], 6, axis=1) + np.matmul(np.transpose(R), s.P) - s.B 
+        s.leg = np.repeat(trans[:, np.newaxis], 6, axis=1) + np.repeat(s.home_pos[:, np.newaxis], 6, axis=1) + np.matmul(R, s.P) - s.B 
+
         s.llegl = np.linalg.norm(s.leg, axis=0)
 
         # Position of legs, wrt to their individual bases
@@ -143,7 +147,9 @@ class Stewart_Platform(object):
         orient = np.transpose(orient)
 
         # Get rotation matrix of platform. RotZ* RotY * RotX -> matmul
-        R = np.matmul( np.matmul(s.rotZ(orient[2]), s.rotY(orient[1])), s.rotX(orient[0]) )
+        # R = np.matmul( np.matmul(s.rotZ(orient[2]), s.rotY(orient[1])), s.rotX(orient[0]) )
+        R = np.matmul( np.matmul(s.rotX(orient[0]), s.rotY(orient[1])), s.rotZ(orient[2]) )
+
         
         # Get leg length for each leg
         for i in range(6):        
