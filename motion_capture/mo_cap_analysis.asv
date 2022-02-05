@@ -1,0 +1,51 @@
+clear all; cd('D:\Github\MCU_App\Stewart_Platform_Motion_Simulator\motion_capture')
+open('Box Jump 2.csv')
+% open('Burpee.csv')
+%%
+% exercise_ = Run(1:end-1,1:6)
+%%
+% exercise_ = exercise(:,3:end-1)
+% exercise_ = (exercise_ - mean(exercise_,1))
+%%
+exercise_ = Boxjump2(10:end-10,1:6);
+
+% exercise_(:,2) = exercise_(:,2)-160
+% exercise_(:,3) = exercise_(:,3)-100
+
+
+% exercise_(:,2:3) = exercise_(:,2:3)-90
+exercise_(:,2) = exercise_(:,2)-140
+exercise_(:,3) = exercise_(:,3)-110
+
+exercise_(:,4:6) = exercise_(:,4:6)./8 % Scale down by body ratio
+exercise_(:,4:6) = exercise_(:,4:6)-median(exercise_(:,4:6))
+
+labels = {'RX',	'RY',	'RZ',	'TX',	'TY',	'TZ'};
+%
+figure(1);
+for i = 1:6
+%     [exercise_(:, i), ~] = lowpass(exercise_(:, i), 20, 100);
+    exercise_ = exercise_(10:end-15, :);
+    subplot(6,1,i); plot(exercise_(:, i));
+    ylabel(labels{i});
+end
+% subplot(6,1,1); title('Subject1:Kinematics, World Root')
+subplot(6,1,1); title('Subject1:Segments: LowerBack')
+
+%%
+% figure(2);
+% exercise_ = Run(10:end-10,7:12)
+% for i = 1:6
+% %     [exercise_(:, i), ~] = lowpass(exercise_(:, i), 20, 100);
+%     exercise_ = exercise_(10:end-15, :);
+%     subplot(6,1,i); plot(exercise_(:, i));
+%     ylabel(labels{i});
+% end
+% subplot(6,1,1); title('Subject1:Segments: LowerBack')
+% 
+% 
+% 
+% exercise_ = Run(1:end-1,7:12)
+
+%%
+writematrix(exercise_,'Box_Jump.csv')

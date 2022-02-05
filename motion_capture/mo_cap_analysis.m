@@ -1,39 +1,35 @@
-clear all;
-open('Shadow box.csv')
+clear all; cd('D:\Github\MCU_App\Stewart_Platform_Motion_Simulator\motion_capture')
+open('Box Jump 2.csv')
 % open('Burpee.csv')
-Badminton = Shadowbox
+
 %%
-Badminton_ = table2array(Badminton)
-Badminton_ = str2double(Badminton_(2:1500,3:14))
+exercise_ = Boxjump2(10:end-10,1:6);
+% [-movements[ix,3],movements[ix,1],movements[ix,2]
+exercise_(:,1:3) = [-exercise_(:,3), exercise_(:,1), exercise_(:,2)]
+% 
+offset = [110, -0, -150];
+% offset = [0, 0, 0];
+exercise_(:,1) = exercise_(:,1)+offset(1)
+exercise_(:,2) = exercise_(:,2)+offset(2)
+exercise_(:,3) = exercise_(:,3)+offset(3)
 
+exercise_(:,2) = exercise_(:,2)/2
+exercise_(:,3) = exercise_(:,3)/2
+
+exercise_(:,4:6) = exercise_(:,4:6)./16 % Scale Trans down by body ratio
+exercise_(:,4:6) = exercise_(:,4:6)-median(exercise_(:,4:6))
+
+labels = {'RX',	'RY',	'RZ',	'TX',	'TY',	'TZ'};
 %
-Badminton_ = (Badminton_ - mean(Badminton_,1))
-
-% for i = 1:12
-%     subplot(12,1,i); plot(Badminton_(:, i))
-% end
-% range(Badminton)
-% Badminton_ = Badminton_ ./std(Badminton_)
-%
-% Badminton__(:,3) = Badminton_(:,1)
-% Badminton__(:,2) = Badminton_(:,2)
-% Badminton__(:,1) = Badminton_(:,3)
-% Badminton_(:,1:3) = Badminton__(:,1:3)
-
-Badminton__ = Badminton_(:,[1:6])-Badminton_(:,[7:12])
-
-
-Badminton__(:,4:6) = Badminton__(:,4:6)./4
-% Badminton__ = bandpass(Badminton__, 2000, 20)
-
+figure(1);
 for i = 1:6
-    [Badminton__(:, i), ~] = lowpass(Badminton__(:, i), 20, 100);
-    subplot(6,1,i); plot(Badminton__(:, i))
+%     [exercise_(:, i), ~] = lowpass(exercise_(:, i), 20, 100);
+    subplot(6,1,i); plot(exercise_(:, i));
+    ylabel(labels{i});
 end
+% subplot(6,1,1); title('Subject1:Kinematics, World Root')
+subplot(6,1,1); title('Subject1:Segments: LowerBack')
 
-for i = length(Badminton__)
-    Badminton__(:, 1:3)= [rotz(30)*Badminton__(:, 1:3)']' ;
-end
-
-
-writematrix(Badminton__,'Badminton_r.csv')
+%%
+exercise__ = exercise_(1:1600,:)
+writematrix(exercise_,'Box_Jump.csv')

@@ -103,7 +103,8 @@ class Stewart_Platform(object):
         rotation = np.transpose(rotation)
 
         # Get rotation matrix of platform. RotZ* RotY * RotX -> matmul
-        R = np.matmul( np.matmul(s.rotX(rotation[0]), s.rotY(rotation[1])), s.rotZ(rotation[2]) )
+        R = np.matmul( np.matmul(s.rotZ(rotation[2]), s.rotY(rotation[1])), s.rotX(rotation[0]) )
+        # R = np.matmul( np.matmul(s.rotX(rotation[0]), s.rotY(rotation[1])), s.rotZ(rotation[2]) )
 
         # Get leg length for each leg
         # leg = np.repeat(trans[:, np.newaxis], 6, axis=1) + np.repeat(home_pos[:, np.newaxis], 6, axis=1) + np.matmul(np.transpose(R), P) - B 
@@ -148,14 +149,34 @@ class Stewart_Platform(object):
 
     def plot_platform(s):
         ax = plt.axes(projection='3d') # Data for a three-dimensional line
-        ax.set_xlim3d(-10, 10)
-        ax.set_ylim3d(-10, 10)
-        ax.set_zlim3d(0, 20)
+        ax.set_xlim3d(-100, 100)
+        ax.set_ylim3d(-100, 100)
+        ax.set_zlim3d(0, 200)
+        ax.set_xlabel('x-axis')
+        ax.set_ylabel('y-axis')
+        ax.set_zlabel('z-axis')
 
         # ax.add_collection3d(Poly3DCollection([list(np.transpose(s.B))]), zs='z')
         ax.add_collection3d(Poly3DCollection([list(np.transpose(s.B))], facecolors='green', alpha=0.25))
 
         # ax.add_collection3d(base_plot, zs='z')
+        ax.add_collection3d(Poly3DCollection([list(np.transpose(s.L))], facecolors='blue', alpha=0.25))
+
+        s.plot3D_line(ax, s.B, s.H, 'red')
+        s.plot3D_line(ax, s.H, s.L, 'black')
+        s.plot3D_line(ax, s.B, s.L, 'orange')
+        return ax
+
+    def plot_platform_g(s, global_trans):
+        ax = plt.axes(projection='3d') # Data for a three-dimensional line
+        ax.set_xlim3d(-400, 400)
+        ax.set_ylim3d(-400, 400)
+        ax.set_zlim3d(0, 200)
+        ax.set_xlabel('x-axis')
+        ax.set_ylabel('y-axis')
+        ax.set_zlabel('z-axis')
+
+        ax.add_collection3d(Poly3DCollection([list(np.transpose(s.B))], facecolors='green', alpha=0.25))
         ax.add_collection3d(Poly3DCollection([list(np.transpose(s.L))], facecolors='blue', alpha=0.25))
 
         s.plot3D_line(ax, s.B, s.H, 'red')
