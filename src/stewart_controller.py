@@ -184,24 +184,45 @@ class Stewart_Platform(object):
         s.plot3D_line(ax, s.B, s.L, 'orange')
         return ax
 
-
     def rotX(s, phi):
         rotx = np.array([
             [1,     0    ,    0    ],
-            [0,  np.cos(phi), np.sin(phi)],
-            [0, -np.sin(phi), np.cos(phi)] ])
+            [0,  np.cos(phi), -np.sin(phi)],
+            [0,  np.sin(phi), np.cos(phi)] ])
         return rotx
 
     def rotY(s, theta):    
         roty = np.array([
-            [np.cos(theta), 0, -np.sin(theta) ],
+            [np.cos(theta), 0, np.sin(theta) ],
             [0         , 1,     0       ],
-            [np.sin(theta), 0,  np.cos(theta) ] ])   
+            [-np.sin(theta), 0,  np.cos(theta) ] ])   
         return roty
         
     def rotZ(s, psi):    
         rotz = np.array([
-            [ np.cos(psi), np.sin(psi), 0 ],
-            [-np.sin(psi), np.cos(psi), 0 ],
+            [ np.cos(psi), -np.sin(psi), 0 ],
+            [np.sin(psi), np.cos(psi), 0 ],
             [   0        ,     0      , 1 ] ])   
         return rotz
+
+    # Roll yaw pitch notation
+    # def rotX(s, phi):
+    #     rotx = np.array([
+    #         [1,     0    ,    0    ],
+    #         [0,  np.cos(phi), np.sin(phi)],
+    #         [0, -np.sin(phi), np.cos(phi)] ])
+    #     return rotx
+
+    # def rotY(s, theta):    
+    #     roty = np.array([
+    #         [np.cos(theta), 0, -np.sin(theta) ],
+    #         [0         , 1,     0       ],
+    #         [np.sin(theta), 0,  np.cos(theta) ] ])   
+    #     return roty
+        
+    # def rotZ(s, psi):    
+    #     rotz = np.array([
+    #         [ np.cos(psi), np.sin(psi), 0 ],
+    #         [-np.sin(psi), np.cos(psi), 0 ],
+    #         [   0        ,     0      , 1 ] ])   
+    #     return rotz
