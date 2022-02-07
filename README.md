@@ -1,7 +1,7 @@
 #  Stewart Platform 6DOF Motion Simulator
 This repo is a continuation of my inverse kinematics tutorial of stewart platforms https://github.com/Yeok-c/Stewart_Py. 
 
-[<img src="./doc/jupyter_nb/Cover_GIF.gif" width="30%" height="30%">](./doc/jupyter_nb/Cover_GIF.gif)
+[<img src="./doc/jupyter_nb/Cover_GIF.gif" width="100%" height="100%">](./doc/jupyter_nb/Cover_GIF.gif)
 
 ### Jupyter Notebook
 The Jupyter Notebook shows how to stream data with Serial to an ESP32 connected to a PCA6835 to control the servo motors.
